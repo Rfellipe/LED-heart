@@ -1,0 +1,92 @@
+/*
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (c) 2021 Andrei-Edward Popa
+ * Copyright (c) 2022 Espressif Systems (Shanghai) Co., Ltd.
+ */
+
+#include <zephyr/dt-bindings/pwm/pwm.h>
+
+/ {
+	pwmleds {
+		compatible = "pwm-leds";
+		pwm_led0: pwm_led0 {
+			label = "PWM LED0";
+			pwms = <&ledc0 0 1000 PWM_POLARITY_NORMAL>;
+		};
+		
+		pwm_led1: pwm_led1 {
+			label = "PWM LED1";
+			pwms = <&ledc0 1 1000 PWM_POLARITY_NORMAL>;
+		};
+		
+		pwm_led2: pwm_led2 {
+			label = "PWM LED2";
+			pwms = <&ledc0 2 1000 PWM_POLARITY_NORMAL>;
+		};
+
+		pwm_led3: pwm_led3 {
+			label = "PWM LED3";
+			pwms = <&ledc0 3 1000 PWM_POLARITY_NORMAL>;
+		};
+
+		pwm_led4: pwm_led4 {
+			label = "PWM LED4";
+			pwms = <&ledc0 4 1000 PWM_POLARITY_NORMAL>;
+		};
+	};
+
+	buttons {
+		compatible = "gpio-keys";
+		button0: button_0 {
+			gpios = <&gpio0 23 (GPIO_PULL_UP | GPIO_ACTIVE_LOW)>;
+			label = "Botão 1";
+			zephyr,code = <INPUT_KEY_0>;
+		};
+	};
+
+	aliases {
+		bt0 = &button0;
+	};
+};
+
+&pinctrl {
+	ledc0_default: ledc0_default {
+		group1 {
+			pinmux = <LEDC_CH0_GPIO16>,
+							<LEDC_CH1_GPIO17>,
+							<LEDC_CH2_GPIO18>,
+							<LEDC_CH3_GPIO19>,
+							<LEDC_CH4_GPIO21>;
+			output-enable;
+		};
+	};
+};
+
+&ledc0 {
+	pinctrl-0 = <&ledc0_default>;
+	pinctrl-names = "default";
+	status = "okay";
+	#address-cells = <1>;
+	#size-cells = <0>;
+	channel0@0 {
+		reg = <0x0>;
+		timer = <0>;
+	};
+	channel1@1 {
+		reg = <0x1>;
+		timer = <0>;
+	};
+	channel2@2 {
+		reg = <0x2>;
+		timer = <0>;
+	};
+	channel3@3 {
+		reg = <0x3>;
+		timer = <0>;
+	};
+	channel4@4 {
+		reg = <0x4>;
+		timer = <0>;
+	};
+};
